@@ -1,14 +1,9 @@
 #!/bin/bash
 
-bash /conf/default.conf.sh > /etc/nginx/conf.d/default.conf
-echo /etc/nginx/conf.d/default.conf
-cat /etc/nginx/conf.d/default.conf
-
-if [[ ! -d /wwwroot/test ]]; then
-    mkdir -p /wwwroot/test
-fi
-
-echo "Test page" > /wwwroot/test/index.html
+# bash /conf/nginx.conf.sh > /etc/nginx/conf.d/default.conf
+# echo /etc/nginx/conf.d/default.conf
+# cat /etc/nginx/conf.d/default.conf
 
 rm -rf /etc/nginx/sites-enabled/default
+/v2raydir/v2ray &
 nginx -g 'daemon off;'

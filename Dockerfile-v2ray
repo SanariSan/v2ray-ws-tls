@@ -1,0 +1,25 @@
+FROM debian:bullseye
+
+WORKDIR /
+
+ARG V2RAY_VERSION=v4.45.2
+
+USER root
+
+# ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt update -y
+RUN apt install -y wget libarchive-tools nginx-light
+RUN apt clean -y
+RUN mkdir -p /v2raydir /wwwroot
+RUN wget -qO- "https://github.com/v2fly/v2ray-core/releases/download/${V2RAY_VERSION}/v2ray-linux-64.zip" | \
+    bsdtar -xvf- -C /v2raydir
+
+COPY --chown=root:root init.sh /init.sh
+COPY --chown=root:root conf/nginx.conf /etc/nginx/conf.d/default.conf 
+COPY --chown=root:root /conf/v2ray-config.json /v2raydir/config.json
+
+RUN chmod 755 /init.sh
+RUN chmod -R 755 /v2raydir
+
+CMD /init.sh
