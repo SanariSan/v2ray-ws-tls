@@ -1,6 +1,10 @@
+#!/bin/bash
+cat <<EOF
 {
   "log": {
-    "loglevel": "warning"
+    "loglevel": "warning",
+    "access": "/log/v2-access.log",
+    "error": "/log/v2-error.log"
   },
   "routing": {
     "domainStrategy": "AsIs",
@@ -15,21 +19,19 @@
   "inbounds": [
     {
       "listen": "127.0.0.1",
-      "port": 9966,
+      "port": ${V2_PORT},
       "protocol": "vmess",
       "settings": {
-        "clients": [
-          {
-            "id": "ID",
-            "level": 0,
-            "security": "chacha20-poly1305"
-          }
-        ]
+        "clients": [${UUIDS_JSON}],
+        "default": {
+          "level": 0,
+          "alterId": ${ALTER_ID}
+        }
       },
       "streamSettings": {
         "network": "ws",
         "wsSettings": {
-          "path": "/path"
+          "path": "${V2_PATH}"
         }
       }
     }
@@ -45,3 +47,4 @@
     }
   ]
 }
+EOF
