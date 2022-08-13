@@ -1,3 +1,5 @@
+#!/bin/bash
+cat <<EOF
 {
   "log": {
     "loglevel": "warning"
@@ -34,15 +36,13 @@
       "settings": {
         "vnext": [
           {
-            "address": "DOMAIN.NAME",
+            "address": "${DOMAIN}",
             "port": 443,
-            "users": [
-              {
-                "id": "ID",
-                "level": 0,
-                "security": "chacha20-poly1305"
-              }
-            ]
+            "users": [${UUIDS_JSON}],
+            "default": {
+              "level": 0,
+              "security": "chacha20-poly1305"
+            }
           }
         ]
       },
@@ -50,10 +50,10 @@
         "network": "ws",
         "security": "tls",
         "tlsSettings": {
-          "serverName": "DOMAIN.NAME"
+          "serverName": "${DOMAIN}"
         },
         "wsSettings": {
-          "path": "/path"
+          "path": "${V2_PATH}"
         }
       },
       "tag": "proxy"
@@ -64,3 +64,4 @@
     }
   ]
 }
+EOF
