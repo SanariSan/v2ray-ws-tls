@@ -21,14 +21,14 @@ server {
             return 301 ${REDIR_URL};
         }
 
-        # Show real IP in v2ray access.log
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        # Uncomment to show real IP in v2ray access.log
+        # proxy_set_header X-Real-IP \$remote_addr;
+        # proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
 
         # WS upgrade require following options
-        proxy_set_header	Host \$http_host;
-        proxy_set_header	Upgrade \$http_upgrade;
-        proxy_set_header	Connection	"upgrade";
+        proxy_set_header        Host \$http_host;
+        proxy_set_header        Upgrade \$http_upgrade;
+        proxy_set_header        Connection      "upgrade";
 
         proxy_http_version 1.1;
         proxy_redirect off;
