@@ -22,7 +22,7 @@ showSettings() {
     echo "V2_PORT = ${V2_PORT}"
     echo "UUIDS = ${UUIDS}"
     echo "REDIR_URL = ${REDIR_URL}"
-    echo "ALTER_ID = ${ALTER_ID}" 
+    echo "ALTER_ID = ${ALTER_ID}"
 }
 
 testCert() {
@@ -95,18 +95,30 @@ getV2RayContainerRunCommand() {
 # ------------------------------------------------------------
 
 startNginxContainer() {
+    if [ $(docker ps -aq -f name='^nginx-proxy$') ]; then
+        echo "Container nginx-proxy is already running"
+        return
+    fi
     echo "Starting nginx-proxy container"
     getNginxContainerRunCommand
     bash -c "$command"
 }
 
 startAcmeContainer() {
+    if [ $(docker ps -aq -f name='^nginx-proxy-acme$') ]; then
+        echo "Container nginx-proxy-acme is already running"
+        return
+    fi
     echo "Starting nginx-proxy-acme container"
     getAcmeContainerRunCommand
     bash -c "$command"
 }
 
 startV2RayContainer() {
+    if [ $(docker ps -aq -f name='^nginx-v2ray$') ]; then
+        echo "Container nginx-v2ray is already running"
+        return
+    fi
     echo "Starting nginx-v2ray container"
     getV2RayContainerBuildCommand
     bash -c "$command"
@@ -117,16 +129,28 @@ startV2RayContainer() {
 # ------------------------------------------------------------
 
 stopNginxContainer() {
+    if [ ! $(docker ps -aq -f name='^nginx-proxy$') ]; then
+        echo "Container nginx-proxy is already stopped"
+        return
+    fi
     echo "Stopping nginx-proxy container"
     docker container stop nginx-proxy
 }
 
 stopAcmeContainer() {
+    if [ ! $(docker ps -aq -f name='^nginx-proxy-acme$') ]; then
+        echo "Container nginx-proxy-acme is already stopped"
+        return
+    fi
     echo "Stopping nginx-proxy-acme container"
     docker container stop nginx-proxy-acme
 }
 
 stopV2RayContainer() {
+    if [ ! $(docker ps -aq -f name='^nginx-v2ray$') ]; then
+        echo "Container nginx-v2ray is already stopped"
+        return
+    fi
     echo "Stopping nginx-v2ray container"
     docker container stop nginx-v2ray
 }
@@ -152,16 +176,22 @@ setupAutostartService() {
     cat <<EOF > ${2}
 [Unit]
 Description=${1}
+After=docker.service
+BindsTo=docker.service
+ReloadPropagatedFrom=docker.service
+StartLimitIntervalSec=0
 
 [Service]
 Type=forking
+RemainAfterExit=yes
 ExecStart=${command}
 TimeoutSec=0
-RemainAfterExit=yes
+Restart=always
+RestartSec=30s
 GuessMainPID=no
 
 [Install]
-WantedBy=multi-user.target 
+WantedBy=multi-user.target
 EOF
 
     systemctl daemon-reload
@@ -169,7 +199,20 @@ EOF
     systemctl start $1
 }
 
+isServiceExists() {
+    local x=$1
+    if systemctl status "${x}" 2> /dev/null | grep -Fq "Active:"; then
+            return 0
+    else
+            return 1
+    fi
+}
+
 setupAutostartNginxContainer() {
+    if isServiceExists "nginx-proxy"; then
+        echo "Service for nginx-proxy already exists"
+        return
+    fi
     echo "Setting up autostart for nginx-proxy container"
     stopNginxContainer
     getNginxContainerRunCommand
@@ -177,6 +220,10 @@ setupAutostartNginxContainer() {
 }
 
 setupAutostartAcmeContainer() {
+    if isServiceExists "nginx-proxy-acme"; then
+        echo "Service for nginx-proxy-acme already exists"
+        return
+    fi
     echo "Setting up autostart for nginx-proxy-acme container"
     stopAcmeContainer
     getAcmeContainerRunCommand
@@ -184,6 +231,10 @@ setupAutostartAcmeContainer() {
 }
 
 setupAutostartV2RayContainer() {
+    if isServiceExists "nginx-v2ray"; then
+        echo "Service for nginx-v2ray already exists"
+        return
+    fi
     echo "Setting up autostart for nginx-v2ray container"
     stopV2RayContainer
     getV2RayContainerRunCommand
@@ -208,16 +259,28 @@ removeAutostartService() {
 }
 
 removeAutostartNginxContainer() {
+    if ! isServiceExists "nginx-proxy"; then
+        echo "Service for nginx-proxy not found"
+        return
+    fi
     echo "Removing autostart for nginx-proxy container"
     removeAutostartService "nginx-proxy" "/etc/systemd/system/nginx-proxy.service"
 }
 
 removeAutostartAcmeContainer() {
+    if ! isServiceExists "nginx-proxy-acme"; then
+        echo "Service for nginx-proxy-acme not found"
+        return
+    fi
     echo "Removing autostart for nginx-proxy-acme container"
     removeAutostartService "nginx-proxy-acme" "/etc/systemd/system/nginx-proxy-acme.service"
 }
 
 removeAutostartV2RayContainer() {
+    if ! isServiceExists "nginx-v2ray"; then
+        echo "Service for nginx-v2ray not found"
+        return
+    fi
     echo "Removing autostart for nginx-v2ray container"
     removeAutostartService "nginx-v2ray" "/etc/systemd/system/nginx-v2ray.service"
 }
