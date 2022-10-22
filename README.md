@@ -46,6 +46,13 @@ sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
+3. Stop apache on your server, it takes port 80 which prevents nginx as intended.
+
+```
+sudo systemctl disable apache2
+sudo systemctl stop apache2
+```
+
 ---
 
 ### Installing
