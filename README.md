@@ -65,6 +65,8 @@ sudo systemctl stop apache2
 
 If placing several UUIDs, then split each with **;** as shown in the example config
 
+To create uuid run `uuid -v4` or go to any generator
+
 ---
 
 ## Usage <a name = "usage"></a>
@@ -97,6 +99,7 @@ If placing several UUIDs, then split each with **;** as shown in the example con
 
 Use if you want to generate UUIDs from recognizable strings, for example "user1", "myid123", etc.
 
-1. First create private key (normal random uuid), for example [here](https://www.uuidgenerator.net/), write it down.
+1. First create private key (normal random uuid), for example [here](https://www.uuidgenerator.net/) or with `uuid -v4`, write it down.
 2. Go to `about:blank` in your browser (for example) and paste code from `generate-uuids.js`.
 3. Put generated UUID as private key, then enter desired words as keywords. Script will output matching UUIDs for each word. You can generate same UUIDs later from same words using **private key**, don't lose it.
+

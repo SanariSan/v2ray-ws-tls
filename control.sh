@@ -55,7 +55,7 @@ getNginxContainerRunCommand() {
     --volume vhost:/etc/nginx/vhost.d \
     --volume html:/usr/share/nginx/html \
     --volume /var/run/docker.sock:/tmp/docker.sock:ro \
-    nginxproxy/nginx-proxy"
+    nginxproxy/nginx-proxy:1.0"
 }
 
 getAcmeContainerRunCommand() {
@@ -67,7 +67,7 @@ getAcmeContainerRunCommand() {
     --volume /var/run/docker.sock:/var/run/docker.sock:ro \
     --volume acme:/etc/acme.sh \
     --env \"DEFAULT_EMAIL=${CERTIFICATE_EMAIL}\" \
-    nginxproxy/acme-companion"
+    nginxproxy/acme-companion:2.2"
 }
 
 getV2RayContainerBuildCommand() {
@@ -330,9 +330,9 @@ $(magentaprint 'Containers menu')
 
 Containers status:
 
-$([ $(docker ps -aq -f name='^nginx-proxy$') ] && greenprint '⚫' || redprint '⚫') nginx-proxy
-$([ $(docker ps -aq -f name='^nginx-proxy-acme$') ] && greenprint '⚫' || redprint '⚫') nginx-proxy-acme
-$([ $(docker ps -aq -f name='^nginx-v2ray$') ] && greenprint '⚫' || redprint '⚫') nginx-v2ray
+$([ $(docker ps -aq -f name='^nginx-proxy$') ] && greenprint '●' || redprint '●') nginx-proxy
+$([ $(docker ps -aq -f name='^nginx-proxy-acme$') ] && greenprint '●' || redprint '●') nginx-proxy-acme
+$([ $(docker ps -aq -f name='^nginx-v2ray$') ] && greenprint '●' || redprint '●') nginx-v2ray
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -421,9 +421,9 @@ $(magentaprint 'Autostart menu')
 
 Services status:
 
-$(systemctl is-active --quiet nginx-proxy && greenprint '⚫' || redprint '⚫') nginx-proxy
-$(systemctl is-active --quiet nginx-proxy-acme && greenprint '⚫' || redprint '⚫') nginx-proxy-acme
-$(systemctl is-active --quiet nginx-v2ray && greenprint '⚫' || redprint '⚫') nginx-v2ray
+$(systemctl is-active --quiet nginx-proxy && greenprint '●' || redprint '●') nginx-proxy
+$(systemctl is-active --quiet nginx-proxy-acme && greenprint '●' || redprint '●') nginx-proxy-acme
+$(systemctl is-active --quiet nginx-v2ray && greenprint '●' || redprint '●') nginx-v2ray
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++
 
