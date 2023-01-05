@@ -48,6 +48,7 @@ getNginxContainerRunCommand() {
     --rm \
     --detach \
     --name nginx-proxy \
+    --net inbound \
     --publish 80:80 \
     --publish 443:443 \
     --volume $(pwd)/log:/log \
@@ -63,6 +64,7 @@ getAcmeContainerRunCommand() {
     --rm \
     --detach \
     --name nginx-proxy-acme \
+    --net inbound \
     --volumes-from nginx-proxy \
     --volume /var/run/docker.sock:/var/run/docker.sock:ro \
     --volume acme:/etc/acme.sh \
@@ -79,6 +81,7 @@ getV2RayContainerRunCommand() {
     --rm \
     --detach \
     --name nginx-v2ray \
+    --net inbound \
     --volume $(pwd)/log:/log \
     --volume $(pwd)/client:/client \
     --env \"VIRTUAL_HOST=${DOMAIN}\" \
