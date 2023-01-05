@@ -95,6 +95,12 @@ To create uuid run `uuid -v4` or go to any generator
 
 ---
 
+#### Side note
+
+Project uses [nginx-proxy](https://github.com/nginx-proxy/nginx-proxy) and [acme-companion](https://github.com/nginx-proxy/acme-companion) containers. To make them work not only within this project, but also for proxying other projects, I assigned network `inbound` to both containers. Left more info about that [here](https://github.com/nginx-proxy/nginx-proxy/issues/1081#issuecomment-1372296950).
+
+---
+
 #### THIS INFO IS OPTIONAL AND FOR CONVENIENCE ONLY
 
 Use if you want to generate UUIDs from recognizable strings, for example "user1", "myid123", etc.
