@@ -18,9 +18,7 @@ Repo presents:
 - [nginx-proxy-acme](https://github.com/nginx-proxy/acme-companion) container which is in charge of issuing certificates for any deployed container + auto renewing them
 - nginx-v2ray container which is the main deal here
 
-Note that you should use **start.sh**.
-
-Run **start.sh**, not other .sh scripts directly.
+Run **start.sh**
 
 ---
 
@@ -60,7 +58,7 @@ sudo systemctl stop apache2
 1. Clone this repo `git clone https://github.com/SanariSan/v2ray-ws-tls`
 2. Cd into directory `cd v2ray-ws-tls`
 3. Make script executable `chmod 755 ./start.sh`
-4. Now replace values in `start.sh` with your own, use **nano** or other editor `nano ./start.sh`
+4. Copy rename .env.copy to .env and replace values with your own, use **nano** or other editor `nano ./start.sh`
 5. Run script with `/bin/bash ./start.sh`
 
 If placing several UUIDs, then split each with **;** as shown in the example config
@@ -108,4 +106,3 @@ Use if you want to generate UUIDs from recognizable strings, for example "user1"
 1. First create private key (normal random uuid), for example [here](https://www.uuidgenerator.net/) or with `uuid -v4`, write it down.
 2. Go to `about:blank` in your browser (for example) and paste code from `generate-uuids.js`.
 3. Put generated UUID as private key, then enter desired words as keywords. Script will output matching UUIDs for each word. You can generate same UUIDs later from same words using **private key**, don't lose it.
-
