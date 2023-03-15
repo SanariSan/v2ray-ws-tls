@@ -58,7 +58,7 @@ sudo systemctl stop apache2
 1. Clone this repo `git clone https://github.com/SanariSan/v2ray-ws-tls`
 2. Cd into directory `cd v2ray-ws-tls`
 3. Make script executable `chmod 755 ./start.sh`
-4. Copy rename .env.copy to .env and replace values with your own, use **nano** or other editor `nano ./start.sh`
+4. Rename .env.copy to .env and replace values with your own, use **nano** or other editor `nano ./.env`
 5. Run script with `/bin/bash ./start.sh`
 
 If placing several UUIDs, then split each with **;** as shown in the example config
