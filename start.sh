@@ -60,7 +60,7 @@ getNginxContainerRunCommand() {
     --volume vhost:/etc/nginx/vhost.d \
     --volume html:/usr/share/nginx/html \
     --volume /var/run/docker.sock:/tmp/docker.sock:ro \
-    nginxproxy/nginx-proxy:1.0"
+    nginxproxy/nginx-proxy:1.6.0"
 }
 
 getAcmeContainerRunCommand() {
@@ -73,7 +73,7 @@ getAcmeContainerRunCommand() {
     --volume /var/run/docker.sock:/var/run/docker.sock:ro \
     --volume acme:/etc/acme.sh \
     --env \"DEFAULT_EMAIL=${CERTIFICATE_EMAIL}\" \
-    nginxproxy/acme-companion:2.2"
+    nginxproxy/acme-companion:2.4.0"
 }
 
 getV2RayContainerBuildCommand() {
